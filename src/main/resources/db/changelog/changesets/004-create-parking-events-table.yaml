@@ -40,6 +40,6 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     foreignKeyName: fk_event_spot
-                    referencedTableName: vehicles
+                    referencedTableName: parking_spots
                     referencedColumnNames: id
 
