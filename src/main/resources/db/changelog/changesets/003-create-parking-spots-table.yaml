@@ -1,0 +1,56 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-create-parking-spots-table
+      author: JeeZ
+      changes:
+        - createTable:
+            tableName: parking_spots
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+
+              - column:
+                  name: spot_number
+                  type: INT
+                  constraints:
+                    unique: true
+                    nullable: false
+
+              - column:
+                  name: status
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
+              - column:
+                  name: parking_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_spot_parking
+                    referencedTableName: parking
+                    referencedColumnNames: id
+
+              - column:
+                  name: vehicle_id
+                  type: BIGINT
+                  constraints:
+                    unique: true
+                    foreignKeyName: fk_spot_vehicle
+                    referencedTableName: vehicles
+                    referencedColumnNames: id
