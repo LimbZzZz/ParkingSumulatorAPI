@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-create-parking-events-table
+      author: JeeZ
+      changes:
+        - createTable:
+            tableName: parking_events
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+
+              - column:
+                  name: event_type
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: time
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
+              - column:
+                  name: vehicle_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_event_vehicle
+                    referencedTableName: vehicles
+                    referencedColumnNames: id
+
+              - column:
+                  name: spot_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_event_spot
+                    referencedTableName: parking_spots
+                    referencedColumnNames: id
+

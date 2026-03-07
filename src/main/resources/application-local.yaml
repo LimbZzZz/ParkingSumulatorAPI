@@ -13,6 +13,13 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+<<<<<<< HEAD
+=======
+  liquibase:
+    url: jdbc:postgresql://localhost:5432/ParkingSimulatorDB
+    username: postgres
+    password: VSKOROB2
+>>>>>>> fa18a77950b93b8e6da11ebee320173528a9f75f
 
   data:
     redis:
