@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface SpotRepository extends JpaRepository<SpotEntity, Long> {
     Integer countByParkingId(Long parkingId);
-    List<SpotEntity> findByParkigId(Long parkingId);
+    List<SpotEntity> findByParkingId(Long parkingId);
     List<SpotEntity> findByParkingIdAndSpotNumberGreaterThen(Long parkingId, Integer count);
     SpotEntity findByParkingIdAndSpotNumber(Long parkingId, Integer spotNumber);
 }
