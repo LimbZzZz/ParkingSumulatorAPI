@@ -18,4 +18,7 @@ public class EventRequest {
     @NotNull
     @Positive
     private Long spotId;
+    @NotNull
+    @Positive
+    private Long parkingId;
 }
