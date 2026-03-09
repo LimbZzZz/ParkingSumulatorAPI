@@ -9,6 +9,7 @@ import org.example.Entity.ParkingEntity;
 import org.example.Entity.SpotEntity;
 import org.example.Enums.StatusEnum;
 import org.example.Exception.ParkingNotFoundException;
+import org.example.Exception.SpotNotFoundException;
 import org.example.Exception.UpdateSpotOccupiedException;
 import org.example.Repository.ParkingRepository;
 import org.example.Repository.SpotRepository;
@@ -34,6 +35,7 @@ public class ParkingService {
         log.info("Парковка {} успешно создана", savedEntity.getId());
         return mapToParkingResponse(savedEntity);
     }
+    
     @LogExecutionTime
     public ParkingResponse updateSpotCountOnParking(Long parkingId, Integer newSpotsCount){
         validateIdIsNull(parkingId);
@@ -41,11 +43,7 @@ public class ParkingService {
             throw new IllegalArgumentException("Количество парковочных мест указано не правильно");
         }
 
-        ParkingEntity updatedEntity = parkingRepository.findById(parkingId)
-                .orElseThrow(() ->{
-                    log.warn("Парковка с id {} не найдена", parkingId);
-                    throw new IllegalArgumentException("Парковка не найдена");
-                });
+        ParkingEntity updatedEntity = validateSpotFinding(parkingId);
 
         if(newSpotsCount < updatedEntity.getTotalSpots()){
             List<SpotEntity> spotToRemove = spotRepository
@@ -70,11 +68,7 @@ public class ParkingService {
     @LogExecutionTime
     public ParkingResponse renameParking(Long parkingId, String newName){
         validateIdIsNull(parkingId);
-        ParkingEntity renamedEntity = parkingRepository.findById(parkingId)
-                .orElseThrow(() -> {
-                    log.warn("Параковки с id {} не существует", parkingId);
-                    throw new ParkingNotFoundException(parkingId);
-                });
+        ParkingEntity renamedEntity = validateSpotFinding(parkingId);
         renamedEntity.setName(newName);
         parkingRepository.save(renamedEntity);
         log.info("Название изменено успешно, новое название {}", renamedEntity.getName());
@@ -84,11 +78,7 @@ public class ParkingService {
     @LogExecutionTime
     public ParkingResponse getParkingById(Long parkingId){
         validateIdIsNull(parkingId);
-        ParkingResponse response =  mapToParkingResponse(parkingRepository.findById(parkingId)
-                .orElseThrow(() -> {
-                    log.warn("Параковки с id {} не существует", parkingId);
-                    throw new ParkingNotFoundException(parkingId);
-                }));
+        ParkingResponse response =  mapToParkingResponse(validateSpotFinding(parkingId));
         log.info("Парковка {} успешно получена", parkingId);
         return response;
     }
@@ -156,5 +146,13 @@ public class ParkingService {
             log.warn("Id введен не правильно, текущее значение {}", id);
             throw new IllegalArgumentException("Id введен не правильно");
         }
+    }
+
+    private ParkingEntity validateSpotFinding(Long parkingId){
+        return parkingRepository.findById(parkingId)
+                .orElseThrow(() -> {
+                    log.warn("Точки с id {}, не существует", parkingId);
+                    throw new ParkingNotFoundException(parkingId);
+                });
     }
 }
