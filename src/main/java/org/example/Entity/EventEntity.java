@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.example.Enums.EventTypeEnum;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "parking_events")
